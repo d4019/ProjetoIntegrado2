@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOBAL TECH — Automação para Arquitetura</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#155eef',
+                            blueHover: '#0d47c9',
+                            navy: '#0e1626',
+                            bgLight: '#f7f8fa',
+                            cardBorder: '#e7e9ee'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0b0f19;
+        }
+        /* Custom Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="text-slate-900 antialiased min-h-screen flex flex-col items-center justify-center p-0 sm:p-4 md:p-8">
+
+    <!-- Mockup de Smartphone (Aparece centralizado na tela) -->
+    <div class="w-full max-w-[420px] bg-white sm:rounded-[40px] shadow-2xl border-0 sm:border-[10px] border-slate-800 overflow-hidden relative flex flex-col min-h-screen sm:min-h-[844px]">
+        
+        <!-- Barra de Status do Celular -->
+        <div class="bg-white px-6 pt-3 pb-2 flex justify-between items-center text-xs font-semibold text-slate-800 sticky top-0 z-50">
+            <span>09:41</span>
+            <div class="w-20 h-4 bg-slate-800 rounded-b-xl absolute top-0 left-1/2 -translate-x-1/2"></div>
+            <div class="flex items-center space-x-1.5">
+                <span>5G</span>
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.2 19.57 10.55 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>
+            </div>
+        </div>
+
+        <!-- Cabeçalho / Navbar -->
+        <header class="bg-white/90 backdrop-blur-md sticky top-[28px] z-40 border-b border-slate-100 px-5 py-3.5 flex justify-between items-center">
+            <a href="#" class="text-xl font-black tracking-tight text-brand-navy flex items-center gap-1">
+                <span class="text-brand-blue">LOBAL</span>TECH
+            </a>
+            <button id="menuBtn" onclick="toggleMenu()" class="p-2 rounded-lg text-slate-700 hover:bg-slate-100 transition" aria-label="Abrir Menu">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+        </header>
+
+        <!-- Menu Mobile Suspenso -->
+        <div id="mobileMenu" class="hidden bg-slate-900 text-white px-6 py-6 space-y-4 border-b border-slate-800 animate-fade-in">
+            <a href="#solucoes" onclick="toggleMenu()" class="block text-sm font-semibold hover:text-brand-blue transition">Soluções</a>
+            <a href="#recursos" onclick="toggleMenu()" class="block text-sm font-semibold hover:text-brand-blue transition">Recursos</a>
+            <a href="#contato" onclick="toggleMenu()" class="block text-sm font-semibold hover:text-brand-blue transition">Contato</a>
+            <a href="#contato" onclick="toggleMenu()" class="block w-full text-center bg-brand-blue hover:bg-brand-blueHover text-white font-bold py-3 rounded-xl transition">
+                Solicitar Demonstração
+            </a>
+        </div>
+
+        <!-- Conteúdo Principal -->
+        <main class="flex-grow px-5 py-6 space-y-8 bg-brand-bgLight">
+            
+            <!-- Hero Section -->
+            <section class="space-y-5">
+                <span class="inline-block px-3 py-1 bg-blue-50 text-brand-blue text-xs font-extrabold uppercase tracking-widest rounded-full">
+                    Automação para Arquitetura
+                </span>
+                
+                <h1 class="text-3xl font-black text-slate-900 leading-tight tracking-tight">
+                    Acelere seus projetos arquitetônicos com IA
+                </h1>
+                
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    Projete mais rápido, automatize tarefas repetitivas e aumente o rendimento do seu escritório com nossas soluções inteligentes.
+                </p>
+
+                <div class="space-y-3 pt-2">
+                    <a href="#solucoes" class="block w-full text-center bg-brand-blue hover:bg-brand-blueHover text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-blue-500/25 transition transform active:scale-95">
+                        Conhecer Soluções
+                    </a>
+                    <a href="#contato" class="block w-full text-center bg-white border border-slate-200 text-slate-800 font-bold py-3.5 px-6 rounded-xl hover:bg-slate-50 transition active:scale-95">
+                        Falar com Especialista
+                    </a>
+                </div>
+
+                <!-- Banner / Imagem Hero -->
+                <div class="relative w-full h-48 bg-gradient-to-tr from-brand-navy to-slate-800 rounded-2xl overflow-hidden shadow-md flex items-center justify-center p-6 text-center text-white">
+                    <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#155eef_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                    <div class="relative z-10 space-y-2">
+                        <div class="w-12 h-12 mx-auto bg-brand-blue/20 rounded-xl flex items-center justify-center text-brand-blue border border-brand-blue/30">
+                            ⚡
+                        </div>
+                        <p class="text-xs font-semibold uppercase tracking-wider text-slate-300">Plataforma Lobal Tech</p>
+                        <p class="text-lg font-bold">Produtividade 10x maior no BIM</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção de Soluções/Recursos -->
+            <section id="recursos" class="space-y-4 pt-4">
+                <div>
+                    <span class="text-brand-blue text-xs font-extrabold uppercase tracking-widest">Recursos</span>
+                    <h2 class="text-2xl font-extrabold text-slate-900">Tudo o que seu escritório precisa</h2>
+                </div>
+
+                <!-- Card 1 -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2 hover:border-brand-blue transition">
+                    <div class="w-9 h-9 rounded-lg bg-blue-50 text-brand-blue font-black flex items-center justify-center text-sm border border-blue-100">
+                        01
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-base">Modelagem Automatizada</h3>
+                    <p class="text-slate-600 text-xs leading-relaxed">
+                        Gere elementos arquitetônicos complexos e detalhamentos em segundos, eliminando o trabalho manual e repetitivo.
+                    </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2 hover:border-brand-blue transition">
+                    <div class="w-9 h-9 rounded-lg bg-blue-50 text-brand-blue font-black flex items-center justify-center text-sm border border-blue-100">
+                        02
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-base">Compatibilização Inteligente</h3>
+                    <p class="text-slate-600 text-xs leading-relaxed">
+                        Verifique interferências e inconsistências entre disciplinas de projeto automaticamente antes de ir para a obra.
+                    </p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2 hover:border-brand-blue transition">
+                    <div class="w-9 h-9 rounded-lg bg-blue-50 text-brand-blue font-black flex items-center justify-center text-sm border border-blue-100">
+                        03
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-base">Quantitativos Instantâneos</h3>
+                    <p class="text-slate-600 text-xs leading-relaxed">
+                        Extraia tabelas de materiais, memoriais descritivos e orçamentos em tempo real direto do modelo 3D.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Seção CTA (Call to Action) -->
+            <section id="contato" class="bg-brand-navy text-white rounded-2xl p-6 space-y-4 shadow-xl">
+                <h2 class="text-xl font-bold leading-tight">
+                    Pronto para transformar a rotina do seu escritório?
+                </h2>
+                <p class="text-slate-400 text-xs leading-relaxed">
+                    Agende uma demonstração gratuita e veja como nossas ferramentas de automação reduzem o tempo de entrega de projetos.
+                </p>
+                
+                <form onsubmit="handleSubmit(event)" class="space-y-3 pt-2">
+                    <input type="text" placeholder="Seu nome" required class="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white placeholder-slate-400 focus:outline-none focus:border-brand-blue">
+                    <input type="email" placeholder="Seu e-mail corporativo" required class="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white placeholder-slate-400 focus:outline-none focus:border-brand-blue">
+                    <button type="submit" class="w-full bg-brand-blue hover:bg-brand-blueHover text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-blue-600/30">
+                        Solicitar Demonstração
+                    </button>
+                </form>
+                <div id="formFeedback" class="hidden text-emerald-400 text-xs font-semibold text-center pt-2">
+                    ✓ Solicitação enviada com sucesso! Entraremos em contato.
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Rodapé -->
+        <footer class="bg-white border-t border-slate-200 px-5 py-6 text-center space-y-2">
+            <p class="text-xs font-bold text-brand-navy">LOBAL TECH — Automação para Arquitetura</p>
+            <p class="text-[10px] text-slate-500">© 2026 LOBAL TECH. Todos os direitos reservados.</p>
+        </footer>
+
+        <!-- Indicador Home do Celular (Barra inferior iOS) -->
+        <div class="bg-white pb-2 flex justify-center">
+            <div class="w-32 h-1 bg-slate-900 rounded-full"></div>
+        </div>
+
+    </div>
+
+    <!-- Interatividade com JS -->
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        function handleSubmit(e) {
+            e.preventDefault();
+            const feedback = document.getElementById('formFeedback');
+            feedback.classList.remove('hidden');
+            e.target.reset();
+        }
+    </script>
+</body>
+</html>

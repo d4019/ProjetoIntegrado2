@@ -1,0 +1,1 @@
+Refizemos o site inteiro para acomodar os requisitos funcionais que não fizemos na versão 1.

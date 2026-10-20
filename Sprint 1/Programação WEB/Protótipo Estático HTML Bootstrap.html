@@ -1,0 +1,906 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LOBAL TECH • Plataforma de Automação</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #101c32;
+            --blue: #245cf5;
+            --sky: #eaf0ff;
+            --line: #e4eaf3;
+            --bg: #f5f7fb;
+            --muted: #65738a;
+            --green: #14845c;
+            --orange: #aa6519;
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--navy);
+            font: 14px system-ui, -apple-system, "Segoe UI", sans-serif;
+        }
+        a { color: inherit; }
+        .sidebar {
+            position: sticky;
+            top: 0;
+            width: 242px;
+            height: 100vh;
+            flex: 0 0 242px;
+            overflow-y: auto;
+            padding: 24px 14px;
+            background: #101d34;
+            color: #eaf0fc;
+        }
+        .logo {
+            margin: 4px 10px 25px;
+            font-size: 23px;
+            font-weight: 900;
+            letter-spacing: -1px;
+        }
+        .logo span { color: #79a9ff; }
+        .sidebar .nav-link {
+            margin: 2px 0;
+            padding: 12px 13px;
+            border-radius: 10px;
+            color: #c5d2e7;
+        }
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active {
+            background: #243b62;
+            color: #fff;
+        }
+        .sidebar .nav-link span:first-child {
+            display: inline-block;
+            width: 25px;
+        }
+        .side-bottom {
+            margin-top: 24px;
+            padding-top: 12px;
+            border-top: 1px solid #32435f;
+        }
+        .main { flex: 1; min-width: 0; }
+        .topbar {
+            position: sticky;
+            z-index: 5;
+            top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 16px 28px;
+            border-bottom: 1px solid var(--line);
+            background: #fff;
+        }
+        .content { max-width: 1280px; margin: auto; padding: 30px; }
+        .muted, .text-muted { color: var(--muted) !important; }
+        h1 { margin: 6px 0; font-size: 29px; letter-spacing: -.7px; }
+        h2 { margin: 0 0 16px; font-size: 20px; }
+        h3 { margin: 4px 0 12px; font-size: 16px; }
+        .sub { margin: 0 0 25px; color: var(--muted); }
+        .card {
+            margin-bottom: 17px;
+            padding: 22px;
+            border: 1px solid var(--line);
+            border-radius: 17px;
+            background: #fff;
+            box-shadow: 0 5px 20px #152b4906;
+            overflow-wrap: anywhere;
+        }
+        .card-title-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .btn { border-radius: 10px; font-weight: 650; }
+        .btn-primary { border-color: var(--blue); background: var(--blue); }
+        .btn-outline-primary { border-color: #d7e0ec; color: var(--navy); }
+        .btn-outline-primary:hover { border-color: var(--blue); background: #fff; color: var(--navy); }
+        .badge-soft {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 30px;
+            background: var(--sky);
+            color: #2154bb;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .badge-green { background: #e5f7ef; color: #08754b; }
+        .badge-orange { background: #fff1dc; color: #955814; }
+        .badge-red { background: #fff0f1; color: #a53643; }
+        .form-label { margin-bottom: 7px; font-size: 12px; font-weight: 650; }
+        .form-control, .form-select {
+            min-width: 0;
+            border-color: #d9e1ed;
+            border-radius: 10px;
+            padding: 11px 12px;
+        }
+        textarea.form-control { min-height: 92px; resize: vertical; }
+        .stat { margin: 12px 0 0; font-size: 29px; font-weight: 850; }
+        .list-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+        .list-item:last-child { border-bottom: 0; }
+        .table { margin-bottom: 0; }
+        .table th { color: var(--muted); font-size: 12px; white-space: nowrap; }
+        .table td, .table th { padding: 13px 8px; vertical-align: middle; }
+        .table-wrap { overflow-x: auto; }
+        .notice {
+            margin: 10px 0;
+            padding: 12px;
+            border-left: 4px solid #e5a53a;
+            border-radius: 8px;
+            background: #fff9ee;
+        }
+        .floor {
+            position: relative;
+            height: 370px;
+            overflow: hidden;
+            border: 2px solid #8495b0;
+            border-radius: 8px;
+            background-color: #fafcff;
+            background-image:
+                linear-gradient(#dce5f2 1px, transparent 1px),
+                linear-gradient(90deg, #dce5f2 1px, transparent 1px);
+            background-size: 26px 26px;
+        }
+        .rooms {
+            position: absolute;
+            inset: 25px;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 6px;
+        }
+        .room {
+            display: grid;
+            place-items: center;
+            border: 4px solid #5c6c83;
+            background: #ffffffb9;
+            text-align: center;
+            font-weight: 750;
+        }
+        .room.selected { background: #dce9ff; }
+        .room-preview {
+            min-height: 115px;
+            padding: 12px;
+            border: 2px solid #dce5f2;
+            border-radius: 13px;
+            background: #f8fafc;
+        }
+        .product-icon {
+            display: grid;
+            min-height: 115px;
+            place-items: center;
+            margin-bottom: 14px;
+            border-radius: 12px;
+            background: #f4f7fb;
+            color: #245cf5;
+            font-size: 42px;
+        }
+        .req { color: #5875a7; background: #eef3fd; }
+        .landing {
+            min-height: 100vh;
+            padding: 28px;
+            background: linear-gradient(125deg, #101e38, #193a75);
+            color: #fff;
+        }
+        .landing .logo { margin: 4px 10px; }
+        .hero {
+            display: grid;
+            max-width: 1080px;
+            grid-template-columns: 1.2fr 1fr;
+            align-items: center;
+            gap: 50px;
+            margin: 80px auto;
+        }
+        .hero h1 { font-size: clamp(36px, 5vw, 66px); line-height: 1.06; }
+        .hero p { color: #cfddf4; font-size: 18px; }
+        .hero-box {
+            padding: 35px;
+            border: 1px solid #ffffff3b;
+            border-radius: 22px;
+            background: #ffffff15;
+        }
+        .auth-box {
+            max-width: 460px;
+            margin: 9vh auto;
+            padding: 32px;
+            border-radius: 20px;
+            background: #fff;
+            color: var(--navy);
+        }
+        .section-anchor { scroll-margin-top: 88px; }
+        .no-operation {
+            margin: 0 0 18px;
+            padding: 12px 14px;
+            border: 1px solid #d7e0ec;
+            border-radius: 10px;
+            background: #fff;
+            color: var(--muted);
+        }
+        @media (min-width: 1200px) {
+            .content { padding: 34px 42px; }
+        }
+        @media (max-width: 900px) {
+            .sidebar { width: 190px; flex-basis: 190px; padding: 16px 9px; }
+            .sidebar .logo { font-size: 19px; }
+            .sidebar .nav-link { padding: 11px 9px; }
+            .content { padding: 22px; }
+        }
+        @media (max-width: 750px) {
+            .shell { display: block !important; }
+            .sidebar {
+                position: sticky;
+                z-index: 12;
+                top: 0;
+                display: flex;
+                width: 100%;
+                height: auto;
+                padding: 8px;
+                overflow-x: auto;
+            }
+            .sidebar .logo, .side-bottom { display: none; }
+            .sidebar nav { display: flex; flex-wrap: nowrap; }
+            .sidebar .nav-link { flex: 0 0 auto; padding: 10px; }
+            .topbar { flex-wrap: wrap; padding: 12px; }
+            .content { padding: 14px; }
+            .hero { grid-template-columns: 1fr; gap: 22px; margin: 50px auto; }
+            .card { padding: 16px; }
+            .floor { height: 330px; }
+            .table { font-size: 12px; }
+            .table td, .table th { padding: 9px 5px; }
+        }
+        @media (max-width: 600px) {
+            .hero { margin: 36px auto; }
+            .landing { padding: 18px; }
+            .auth-box { margin: 7vh auto; padding: 22px; }
+            .floor { height: 310px; }
+        }
+        @media print {
+            .sidebar, .topbar, .no-operation { display: none !important; }
+            .shell { display: block !important; }
+            .content { max-width: none; padding: 0; }
+            .card { break-inside: avoid; box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+    <section class="landing" id="inicio">
+        <div class="container-fluid">
+            <header class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                <div class="logo">LOBAL<span> TECH</span></div>
+                <div class="d-flex flex-wrap gap-2">
+                    <a class="btn btn-outline-light" href="#login">Entrar</a>
+                    <a class="btn btn-primary" href="#contato">Solicitar atendimento</a>
+                </div>
+            </header>
+            <div class="hero">
+                <div>
+                    <div class="text-uppercase" style="letter-spacing:3px;color:#a9c8ff">AUTOMAÇÃO + ARQUITETURA</div>
+                    <h1>Projetos inteligentes, do conceito à execução.</h1>
+                    <p>Centralize plantas, dispositivos, análises técnicas, inspeções e acompanhamento de obra em um só lugar.</p>
+                    <div class="d-flex flex-wrap gap-2">
+                        <a class="btn btn-primary" href="#login">Acessar plataforma</a>
+                        <a class="btn btn-outline-light" href="#contato">Falar com o comercial</a>
+                    </div>
+                </div>
+                <div class="hero-box">
+                    <h2>Uma plataforma, todas as etapas</h2>
+                    <p>01 • Planejamento e ambientes</p>
+                    <p>02 • Dispositivos e simulações</p>
+                    <p>03 • Inspeção e aprovação</p>
+                    <p>04 • Execução e auditoria</p>
+                    <hr class="opacity-25">
+                    <p>Contato: comercial@lobal.tech</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="landing" id="login">
+        <header class="d-flex align-items-center justify-content-between gap-3">
+            <div class="logo">LOBAL<span> TECH</span></div>
+            <a class="btn btn-outline-light" href="#inicio">Página inicial</a>
+        </header>
+        <div class="auth-box">
+            <h1>Entrar na plataforma</h1>
+            <p class="muted">Contas demonstrativas: admin@lobal.tech, arquiteta@lobal.tech ou tecnico@lobal.tech — senha 123456</p>
+            <div class="mb-3">
+                <label class="form-label" for="login-email">E-mail</label>
+                <input class="form-control" id="login-email" type="email" autocomplete="username">
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="login-password">Senha</label>
+                <input class="form-control" id="login-password" type="password" autocomplete="current-password">
+            </div>
+            <a class="btn btn-primary w-100" href="#dashboard">Entrar</a>
+            <p class="mt-3 mb-2"><a href="#cadastro">Criar conta</a> · <a href="#recuperar-senha">Recuperar senha</a></p>
+            <small class="muted">Demonstração local: autenticação ilustrativa, sem servidor seguro.</small>
+        </div>
+    </section>
+
+    <section class="landing" id="cadastro">
+        <header class="d-flex align-items-center justify-content-between gap-3">
+            <div class="logo">LOBAL<span> TECH</span></div>
+            <a class="btn btn-outline-light" href="#inicio">Página inicial</a>
+        </header>
+        <div class="auth-box">
+            <h1>Criar conta</h1>
+            <p class="muted">Cadastre-se para acompanhar projetos.</p>
+            <div class="mb-3">
+                <label class="form-label" for="cadastro-nome">Nome completo</label>
+                <input class="form-control" id="cadastro-nome" type="text">
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="cadastro-email">E-mail</label>
+                <input class="form-control" id="cadastro-email" type="email">
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="cadastro-senha">Senha</label>
+                <input class="form-control" id="cadastro-senha" type="password">
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="cadastro-perfil">Perfil</label>
+                <select class="form-select" id="cadastro-perfil">
+                    <option>Cliente</option><option>Arquiteto</option><option>Técnico</option>
+                </select>
+            </div>
+            <a class="btn btn-primary w-100" href="#dashboard">Cadastrar</a>
+            <p class="mt-3"><a href="#login">Já tenho conta</a></p>
+        </div>
+    </section>
+
+    <section class="landing" id="recuperar-senha">
+        <header class="d-flex align-items-center justify-content-between gap-3">
+            <div class="logo">LOBAL<span> TECH</span></div>
+            <a class="btn btn-outline-light" href="#inicio">Página inicial</a>
+        </header>
+        <div class="auth-box">
+            <h1>Recuperar senha</h1>
+            <p class="muted">Demonstração local: informe o e-mail cadastrado e uma nova senha. Não há envio de e-mail.</p>
+            <div class="mb-3">
+                <label class="form-label" for="recuperar-email">E-mail cadastrado</label>
+                <input class="form-control" id="recuperar-email" type="email">
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="recuperar-nova-senha">Nova senha</label>
+                <input class="form-control" id="recuperar-nova-senha" type="password">
+            </div>
+            <a class="btn btn-primary" href="#login">Atualizar senha</a>
+        </div>
+    </section>
+
+    <section class="landing" id="contato">
+        <header class="d-flex align-items-center justify-content-between gap-3">
+            <div class="logo">LOBAL<span> TECH</span></div>
+            <a class="btn btn-outline-light" href="#inicio">Voltar</a>
+        </header>
+        <div class="auth-box">
+            <h1>Atendimento comercial</h1>
+            <p>Fale com nossa equipe sobre seu projeto de automação.</p>
+            <div class="mb-3"><label class="form-label" for="contato-nome">Nome</label><input class="form-control" id="contato-nome" type="text"></div>
+            <div class="mb-3"><label class="form-label" for="contato-email">E-mail</label><input class="form-control" id="contato-email" type="email"></div>
+            <div class="mb-3"><label class="form-label" for="contato-telefone">Telefone</label><input class="form-control" id="contato-telefone" type="tel"></div>
+            <div class="mb-3"><label class="form-label" for="contato-mensagem">Mensagem</label><textarea class="form-control" id="contato-mensagem"></textarea></div>
+            <a class="btn btn-primary" href="#inicio">Enviar interesse</a>
+            <p class="muted mt-3">E-mail: comercial@lobal.tech • Canal demonstrativo</p>
+        </div>
+    </section>
+
+    <div class="shell d-flex" id="plataforma">
+        <aside class="sidebar">
+            <div class="logo">LOBAL<span> TECH</span></div>
+            <nav class="nav flex-column" aria-label="Navegação principal">
+                <a class="nav-link active" href="#dashboard"><span>▣</span>Dashboard</a>
+                <a class="nav-link" href="#comercial"><span>◇</span>Comercial</a>
+                <a class="nav-link" href="#projetos"><span>▦</span>Projetos</a>
+                <a class="nav-link" href="#dispositivos"><span>◈</span>Dispositivos</a>
+                <a class="nav-link" href="#simulacoes"><span>◉</span>Simulações</a>
+                <a class="nav-link" href="#inspecoes"><span>⌕</span>Inspeções</a>
+                <a class="nav-link" href="#versoes"><span>↺</span>Versões</a>
+                <a class="nav-link" href="#execucao"><span>▤</span>Execução</a>
+                <a class="nav-link" href="#mensagens"><span>✉</span>Mensagens</a>
+                <a class="nav-link" href="#notificacoes"><span>♧</span>Notificações</a>
+                <a class="nav-link" href="#auditoria"><span>≡</span>Auditoria</a>
+                <a class="nav-link" href="#usuarios"><span>♙</span>Usuários</a>
+                <a class="nav-link" href="#requisitos"><span>☷</span>Requisitos</a>
+            </nav>
+            <div class="side-bottom"><a class="nav-link" href="#inicio">Sair</a></div>
+        </aside>
+
+        <div class="main">
+            <header class="topbar">
+                <div><b>Dashboard</b> <span class="muted">/ Residência Aurora</span></div>
+                <div class="d-flex flex-wrap align-items-center gap-2">
+                    <span class="badge-soft">Administrador</span>
+                    <a class="btn btn-outline-primary btn-sm" href="#notificacoes">🔔 0</a>
+                    <a class="btn btn-outline-primary btn-sm" href="#inicio">Sair</a>
+                </div>
+            </header>
+            <main class="content">
+                <p class="no-operation">Versão estática para visualização: os campos e controles não salvam dados nem executam ações. Navegue pelas áreas usando o menu ou os links internos. Implementação somente em HTML, CSS e Bootstrap CSS.</p>
+
+                <section class="section-anchor" id="dashboard">
+                    <h1>Visão geral</h1>
+                    <p class="sub">Acompanhe as etapas e continue de onde parou.</p>
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4"><div class="card h-100"><span class="muted">Projetos</span><div class="stat">1</div></div></div>
+                        <div class="col-md-4"><div class="card h-100"><span class="muted">Dispositivos posicionados</span><div class="stat">0</div></div></div>
+                        <div class="col-md-4"><div class="card h-100"><span class="muted">Notificações pendentes</span><div class="stat">0</div></div></div>
+                    </div>
+                    <section class="card">
+                        <h2>Ações rápidas</h2>
+                        <div class="d-flex flex-wrap gap-2">
+                            <a class="btn btn-primary" href="#novo-projeto">Novo projeto</a>
+                            <a class="btn btn-outline-primary" href="#projetos">Abrir planta</a>
+                            <a class="btn btn-outline-primary" href="#simulacoes">Ver simulações</a>
+                            <a class="btn btn-outline-primary" href="#inspecoes">Agendar inspeção</a>
+                            <a class="btn btn-outline-primary" href="#auditoria">Relatórios</a>
+                        </div>
+                    </section>
+                    <section class="card">
+                        <h2>Projetos recentes</h2>
+                        <div class="list-item d-flex flex-wrap justify-content-between gap-2">
+                            <div><b>Residência Aurora</b><p class="muted mb-0">Mariana Costa • Ana Arquiteta</p></div>
+                            <div><span class="badge-soft badge-orange">Em análise</span> <a class="btn btn-outline-primary btn-sm" href="#projetos">Abrir →</a></div>
+                        </div>
+                    </section>
+                    <section class="card">
+                        <h2>Próximos passos</h2>
+                        <p class="mb-0">1. Selecione um projeto e envie sua planta. 2. Escolha um ambiente e posicione dispositivos. 3. Execute a simulação. 4. Envie para análise técnica. 5. Planeje e acompanhe a obra.</p>
+                    </section>
+                </section>
+
+                <section class="section-anchor" id="novo-projeto">
+                    <h1>Novo projeto</h1>
+                    <p class="sub">Campos usados para criar um projeto.</p>
+                    <section class="card">
+                        <h2>Dados do projeto</h2>
+                        <div class="row g-3">
+                            <div class="col-md-6"><label class="form-label" for="novo-projeto-nome">Nome do projeto</label><input class="form-control" id="novo-projeto-nome" value="Residência Aurora"></div>
+                            <div class="col-md-6"><label class="form-label" for="novo-projeto-cliente">Cliente</label><input class="form-control" id="novo-projeto-cliente" value="Mariana Costa"></div>
+                            <div class="col-md-6"><label class="form-label" for="novo-projeto-arquiteto">Arquiteto responsável</label><input class="form-control" id="novo-projeto-arquiteto" value="Ana Arquiteta"></div>
+                            <div class="col-md-6"><label class="form-label" for="novo-projeto-tecnico">Técnico responsável</label><input class="form-control" id="novo-projeto-tecnico" value="João Técnico"></div>
+                        </div>
+                        <p class="muted mt-3 mb-0">O administrador inicial é Administrador; novos projetos começam como Rascunho, com ambientes Sala de Estar, Cozinha e Suíte, prazo de 30 dias e orçamento de R$ 0.</p>
+                    </section>
+                </section>
+
+                <section class="section-anchor" id="comercial">
+                    <h1>Clientes e oportunidades</h1>
+                    <p class="sub">Acompanhe contatos, propostas e vínculo com arquitetos.</p>
+                    <section class="card">
+                        <div class="card-title-row"><h2>Ações</h2><div class="d-flex gap-2"><a class="btn btn-primary" href="#cadastro-cliente">+ Cadastrar cliente</a><a class="btn btn-outline-primary" href="#contato">Novo contato</a></div></div>
+                    </section>
+                    <section class="card">
+                        <h2>Clientes</h2>
+                        <div class="list-item d-flex flex-wrap justify-content-between gap-2">
+                            <div><b>Mariana Costa</b><p class="muted mb-0">mariana@exemplo.com • Arquiteto: Ana Arquiteta</p></div>
+                            <div><span class="badge-soft">Proposta</span> <a class="btn btn-outline-primary btn-sm" href="#cadastro-cliente">Editar</a></div>
+                        </div>
+                    </section>
+                    <section class="card"><h2>Contatos recebidos</h2><p class="muted mb-0">Nenhum contato recebido.</p></section>
+                    <section class="card section-anchor" id="cadastro-cliente">
+                        <h2>Cadastrar ou editar cliente</h2>
+                        <div class="row g-3">
+                            <div class="col-md-6"><label class="form-label" for="cliente-nome">Nome</label><input class="form-control" id="cliente-nome"></div>
+                            <div class="col-md-6"><label class="form-label" for="cliente-email">E-mail</label><input class="form-control" id="cliente-email" type="email"></div>
+                            <div class="col-md-6"><label class="form-label" for="cliente-arquiteto">Arquiteto responsável</label><input class="form-control" id="cliente-arquiteto"></div>
+                            <div class="col-md-6"><label class="form-label" for="cliente-etapa">Etapa comercial</label><input class="form-control" id="cliente-etapa" value="Proposta"></div>
+                        </div>
+                        <button class="btn btn-primary mt-3" type="button">Salvar cliente</button>
+                    </section>
+                </section>
+
+                <section class="section-anchor" id="projetos">
+                    <h1>Projetos e planta</h1>
+                    <p class="sub">Selecione ambientes, faça upload da planta e posicione dispositivos.</p>
+                    <section class="card">
+                        <div class="card-title-row"><h2>Projetos</h2><a class="btn btn-primary" href="#novo-projeto">+ Novo projeto</a></div>
+                        <a class="btn btn-primary" href="#projetos">Residência Aurora</a>
+                    </section>
+                    <div class="row g-3">
+                        <div class="col-xl-6">
+                            <section class="card">
+                                <h2>Dados do projeto</h2>
+                                <div class="list-item"><b>Residência Aurora</b> <span class="badge-soft badge-orange">Em análise</span></div>
+                                <p>Cliente: <b>Mariana Costa</b></p>
+                                <p>Arquiteto: Ana Arquiteta</p>
+                                <p>Técnico: João Técnico</p>
+                                <p>Administrador: Administrador</p>
+                                <div class="d-flex flex-wrap gap-2"><a class="btn btn-outline-primary" href="#responsaveis">Editar responsáveis</a><button class="btn btn-outline-primary" type="button">Arquivar</button></div>
+                            </section>
+                            <section class="card">
+                                <h2>Planta do projeto</h2>
+                                <label class="form-label" for="planta-upload">Enviar imagem ou PDF</label>
+                                <input class="form-control" id="planta-upload" type="file" accept="image/*,.pdf">
+                                <p class="muted mt-2 mb-0">Imagens aparecem na planta. PDFs ficam disponíveis para abrir. Limite demonstrativo: 2,2 MB por arquivo.</p>
+                            </section>
+                            <section class="card section-anchor" id="responsaveis">
+                                <h2>Editar responsáveis</h2>
+                                <div class="mb-3"><label class="form-label" for="responsavel-cliente">Cliente</label><input class="form-control" id="responsavel-cliente" value="Mariana Costa"></div>
+                                <div class="mb-3"><label class="form-label" for="responsavel-arquiteto">Arquiteto responsável</label><input class="form-control" id="responsavel-arquiteto" value="Ana Arquiteta"></div>
+                                <div class="mb-3"><label class="form-label" for="responsavel-tecnico">Técnico responsável</label><input class="form-control" id="responsavel-tecnico" value="João Técnico"></div>
+                                <div class="mb-3"><label class="form-label" for="responsavel-administrador">Administrador</label><input class="form-control" id="responsavel-administrador" value="Administrador"></div>
+                                <button class="btn btn-primary" type="button">Salvar responsáveis</button>
+                            </section>
+                        </div>
+                        <div class="col-xl-6">
+                            <section class="card">
+                                <h2>Ambientes</h2>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <span class="btn btn-primary">Sala de Estar</span><span class="btn btn-outline-primary">Cozinha</span><span class="btn btn-outline-primary">Suíte</span><span class="btn btn-outline-primary">Escritório</span>
+                                </div>
+                                <p class="muted mt-3">Ambiente selecionado: Sala de Estar</p>
+                                <div class="d-flex flex-wrap gap-2"><a class="btn btn-outline-primary" href="#dispositivos">Ver dispositivos</a><a class="btn btn-outline-primary" href="#inspecoes">Abrir inspeção</a></div>
+                                <hr>
+                                <label class="form-label" for="ambiente-novo">Adicionar ambiente</label>
+                                <div class="d-flex gap-2"><input class="form-control" id="ambiente-novo" placeholder="Nome do ambiente"><button class="btn btn-outline-primary" type="button">+ Ambiente</button></div>
+                            </section>
+                            <section class="card">
+                                <div class="card-title-row"><h2>Mapa interativo</h2><div class="d-flex gap-2"><button class="btn btn-outline-primary btn-sm" type="button">−</button><button class="btn btn-outline-primary btn-sm" type="button">+</button><button class="btn btn-outline-primary btn-sm" type="button">Redefinir</button></div></div>
+                                <p class="muted">Selecione um cômodo pela imagem e arraste os dispositivos para posicionar.</p>
+                                <div class="floor" aria-label="Mapa ilustrativo da planta do projeto">
+                                    <div class="rooms">
+                                        <div class="room selected">Sala de Estar</div><div class="room">Cozinha</div>
+                                        <div class="room">Suíte</div><div class="room">Escritório</div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                    <section class="card">
+                        <h2>Pré-visualização dos ambientes</h2>
+                        <div class="row g-3">
+                            <div class="col-sm-6"><div class="room-preview"><b>Sala de Estar</b><p class="muted mb-0">✓ Ambiente selecionado</p></div></div>
+                            <div class="col-sm-6"><div class="room-preview"><b>Cozinha</b><p class="muted mb-0">Clique para selecionar</p></div></div>
+                            <div class="col-sm-6"><div class="room-preview"><b>Suíte</b><p class="muted mb-0">Clique para selecionar</p></div></div>
+                            <div class="col-sm-6"><div class="room-preview"><b>Escritório</b><p class="muted mb-0">Clique para selecionar</p></div></div>
+                        </div>
+                    </section>
+                </section>
+
+                <section class="section-anchor" id="dispositivos">
+                    <h1>Catálogo de automação</h1>
+                    <p class="sub">Explore os produtos das imagens de referência, consulte as descrições e adicione dispositivos ao ambiente selecionado.</p>
+                    <section class="card">
+                        <h2>Pesquisar dispositivos</h2>
+                        <label class="form-label" for="pesquisa-dispositivo">Pesquisar nome ou categoria</label>
+                        <input class="form-control" id="pesquisa-dispositivo" placeholder="Pesquisar nome ou categoria">
+                    </section>
+                    <div class="row g-3">
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Iluminação</span><h3 class="mt-3">Interruptor inteligente</h3><p class="muted">Dispositivo de automação para projetos inteligentes.</p><p class="muted">2 W • R$ 280 (ilustrativo)</p><div class="mt-auto d-flex gap-2"><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button><button class="btn btn-primary btn-sm" type="button">Adicionar à planta</button></div></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Iluminação</span><h3 class="mt-3">Lâmpada LED inteligente</h3><p class="muted">Dispositivo de automação para projetos inteligentes.</p><p class="muted">9 W • R$ 145 (ilustrativo)</p><div class="mt-auto d-flex gap-2"><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button><button class="btn btn-primary btn-sm" type="button">Adicionar à planta</button></div></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Segurança</span><h3 class="mt-3">Sensor de presença</h3><p class="muted">Dispositivo de automação para projetos inteligentes.</p><p class="muted">1 W • R$ 210 (ilustrativo)</p><div class="mt-auto d-flex gap-2"><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button><button class="btn btn-primary btn-sm" type="button">Adicionar à planta</button></div></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Segurança</span><h3 class="mt-3">Câmera IP</h3><p class="muted">Dispositivo de automação para projetos inteligentes.</p><p class="muted">8 W • R$ 650 (ilustrativo)</p><div class="mt-auto d-flex gap-2"><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button><button class="btn btn-primary btn-sm" type="button">Adicionar à planta</button></div></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Climatização</span><h3 class="mt-3">Termostato inteligente</h3><p class="muted">Dispositivo de automação para projetos inteligentes.</p><p class="muted">3 W • R$ 480 (ilustrativo)</p><div class="mt-auto d-flex gap-2"><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button><button class="btn btn-primary btn-sm" type="button">Adicionar à planta</button></div></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Conforto</span><h3 class="mt-3">Controle de cortinas</h3><p class="muted">Dispositivo de automação para projetos inteligentes.</p><p class="muted">25 W • R$ 790 (ilustrativo)</p><div class="mt-auto d-flex gap-2"><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button><button class="btn btn-primary btn-sm" type="button">Adicionar à planta</button></div></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Rede</span><h3 class="mt-3">Hub de automação</h3><p class="muted">Dispositivo de automação para projetos inteligentes.</p><p class="muted">12 W • R$ 1.250 (ilustrativo)</p><div class="mt-auto d-flex gap-2"><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button><button class="btn btn-primary btn-sm" type="button">Adicionar à planta</button></div></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Segurança</span><h3 class="mt-3">Fechadura inteligente</h3><p class="muted">Dispositivo de automação para projetos inteligentes.</p><p class="muted">4 W • R$ 1.150 (ilustrativo)</p><div class="mt-auto d-flex gap-2"><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button><button class="btn btn-primary btn-sm" type="button">Adicionar à planta</button></div></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Sensores e acessórios</span><h3 class="mt-3">Sensor de gás</h3><p class="muted">Detecta possíveis vazamentos de gás e apoia a segurança do ambiente.</p><p class="muted">Preço e potência: consultar fabricante</p><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Sensores e acessórios</span><h3 class="mt-3">Sensor de porta</h3><p class="muted">Identifica abertura e fechamento de portas e janelas.</p><p class="muted">Preço e potência: consultar fabricante</p><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Sensores e acessórios</span><h3 class="mt-3">Módulo de tomada</h3><p class="muted">Permite integrar tomadas e equipamentos elétricos à automação.</p><p class="muted">Preço e potência: consultar fabricante</p><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Sensores e acessórios</span><h3 class="mt-3">IR-Blaster</h3><p class="muted">Emissor infravermelho para controle de equipamentos compatíveis.</p><p class="muted">Preço e potência: consultar fabricante</p><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Sensores e acessórios</span><h3 class="mt-3">Sensor de movimento</h3><p class="muted">Detecta presença e movimento para acionar rotinas e alertas.</p><p class="muted">Preço e potência: consultar fabricante</p><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Linha Fit Lite</span><h3 class="mt-3">FXFL-511</h3><p class="muted">Painel Fit Lite para controle de iluminação e outras funções compatíveis.</p><p class="muted">Preço e potência: consultar fabricante</p><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Linha Fit Lite</span><h3 class="mt-3">FXD-512</h3><p class="muted">Painel Fit Lite com comandos sensíveis ao toque.</p><p class="muted">Preço e potência: consultar fabricante</p><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Linha Fit Lite</span><h3 class="mt-3">FXR-512</h3><p class="muted">Painel Fit Lite de acabamento escuro para automação.</p><p class="muted">Preço e potência: consultar fabricante</p><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Linha Fit Lite</span><h3 class="mt-3">FXR-511</h3><p class="muted">Painel Fit Lite de acabamento claro.</p><p class="muted">Preço e potência: consultar fabricante</p><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Linha Fit Lite</span><h3 class="mt-3">FXR-516</h3><p class="muted">Painel Fit Lite com múltiplos comandos.</p><p class="muted">Preço e potência: consultar fabricante</p><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Linha Fit Lite</span><h3 class="mt-3">FXR-513</h3><p class="muted">Painel Fit Lite com teclas de controle.</p><p class="muted">Preço e potência: consultar fabricante</p><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Linha Fit Lite</span><h3 class="mt-3">FXR-514</h3><p class="muted">Painel Fit Lite de acabamento escuro.</p><p class="muted">Preço e potência: consultar fabricante</p><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Linha Fit Lite</span><h3 class="mt-3">FXD-511</h3><p class="muted">Painel Fit Lite de acabamento claro.</p><p class="muted">Preço e potência: consultar fabricante</p><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Linha Fit Lite</span><h3 class="mt-3">FXM-512</h3><p class="muted">Painel Fit Lite com funções de comando.</p><p class="muted">Preço e potência: consultar fabricante</p><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Linha Smart Energy</span><h3 class="mt-3">DPW-0502</h3><p class="muted">Módulo da linha Smart Energy para monitoramento e integração energética.</p><p class="muted">Preço e potência: consultar fabricante</p><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Linha Smart Energy</span><h3 class="mt-3">DRF-201-LRW</h3><p class="muted">Concentradora para aplicações de monitoramento energético.</p><p class="muted">Preço e potência: consultar fabricante</p><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Linha Smart Energy</span><h3 class="mt-3">DFT-201-045</h3><p class="muted">Módulo de comunicação e monitoramento.</p><p class="muted">Preço e potência: consultar fabricante</p><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Linha Smart Energy</span><h3 class="mt-3">DRF-201-433</h3><p class="muted">Módulo de comunicação RF433 para sistemas de energia.</p><p class="muted">Preço e potência: consultar fabricante</p><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Linha Smart Energy</span><h3 class="mt-3">FXS-96-3C</h3><p class="muted">Medidor com display para acompanhamento de grandezas elétricas.</p><p class="muted">Preço e potência: consultar fabricante</p><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Linha Smart Energy</span><h3 class="mt-3">FXS-36-D65</h3><p class="muted">Medidor compacto para instalações elétricas.</p><p class="muted">Preço e potência: consultar fabricante</p><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Linha Smart Energy</span><h3 class="mt-3">FXS-126-3D80</h3><p class="muted">Medidor de energia para monitoramento de consumo.</p><p class="muted">Preço e potência: consultar fabricante</p><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Linha Smart Energy</span><h3 class="mt-3">FXS-72-D60</h3><p class="muted">Medidor com display para acompanhamento energético.</p><p class="muted">Preço e potência: consultar fabricante</p><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Linha Smart Energy</span><h3 class="mt-3">FXS-36-C100</h3><p class="muted">Medidor compacto de energia.</p><p class="muted">Preço e potência: consultar fabricante</p><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Linha FXA</span><h3 class="mt-3">FXA3012</h3><p class="muted">Painel touch da linha FXA para iluminação e cenas.</p><p class="muted">Preço e potência: consultar fabricante</p><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Linha FXA</span><h3 class="mt-3">FXA5014</h3><p class="muted">Painel touch FXA com acabamento escuro.</p><p class="muted">Preço e potência: consultar fabricante</p><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Linha FXA</span><h3 class="mt-3">FXA0400</h3><p class="muted">Painel touch FXA com comandos de iluminação.</p><p class="muted">Preço e potência: consultar fabricante</p><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Linha FXA</span><h3 class="mt-3">FXA0600</h3><p class="muted">Painel touch FXA com interface de múltiplos circuitos.</p><p class="muted">Preço e potência: consultar fabricante</p><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Linha FXA</span><h3 class="mt-3">FXA0404</h3><p class="muted">Painel touch FXA para cenas e iluminação.</p><p class="muted">Preço e potência: consultar fabricante</p><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Linha FXA</span><h3 class="mt-3">FXA5016</h3><p class="muted">Painel touch FXA com acabamento escuro.</p><p class="muted">Preço e potência: consultar fabricante</p><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button></article></div>
+                        <div class="col-sm-6 col-xl-4"><article class="card h-100"><div class="product-icon">◈</div><span class="badge-soft">Linha FXA</span><h3 class="mt-3">FXA3000</h3><p class="muted">Painel touch FXA com comandos de automação.</p><p class="muted">Preço e potência: consultar fabricante</p><button class="btn btn-outline-primary btn-sm" type="button">Detalhes</button></article></div>
+                    </div>
+                    <section class="card mt-3">
+                        <h2>Dispositivos do projeto</h2>
+                        <p class="muted">Nenhum dispositivo adicionado.</p>
+                        <h3>Posicionamento na planta</h3>
+                        <div class="floor"><div class="rooms"><div class="room selected">Sala de Estar</div><div class="room">Cozinha</div><div class="room">Suíte</div><div class="room">Escritório</div></div></div>
+                    </section>
+                </section>
+
+                <section class="section-anchor" id="simulacoes">
+                    <h1>Simulações e viabilidade</h1>
+                    <p class="sub">Estimativas ilustrativas para apoiar a tomada de decisão.</p>
+                    <div class="row g-3">
+                        <div class="col-md-4"><div class="card"><span class="muted">Potência total</span><div class="stat">0 W</div></div></div>
+                        <div class="col-md-4"><div class="card"><span class="muted">Consumo mensal (5h/dia)</span><div class="stat">0,0 kWh</div></div></div>
+                        <div class="col-md-4"><div class="card"><span class="muted">Custo dos dispositivos</span><div class="stat">R$ 0</div></div></div>
+                    </div>
+                    <section class="card">
+                        <h2>Configuração atual</h2>
+                        <p>0 dispositivo(s) • Prazo estimado: 45 dias • Custo de instalação: R$ 24.000</p>
+                        <p>Economia potencial demonstrativa: 0 kWh/mês (hipótese de 15%).</p>
+                        <div class="d-flex flex-wrap gap-2"><button class="btn btn-primary" type="button">Salvar simulação</button><button class="btn btn-outline-primary" type="button">Enviar à análise técnica</button><button class="btn btn-outline-primary" type="button">Exportar CSV</button></div>
+                    </section>
+                    <section class="card"><h2>Comparar configurações</h2><p class="muted mb-0">Salve uma simulação para comparar com futuras configurações.</p></section>
+                </section>
+
+                <section class="section-anchor" id="inspecoes">
+                    <h1>Inspeções e parecer técnico</h1>
+                    <p class="sub">Agende visitas, registre resultados por ambiente e envie pareceres.</p>
+                    <section class="card">
+                        <h2>Agendar inspeção</h2>
+                        <div class="row g-3">
+                            <div class="col-md-6"><label class="form-label" for="inspecao-data">Data da visita</label><input class="form-control" id="inspecao-data" type="date"></div>
+                            <div class="col-md-6"><label class="form-label" for="inspecao-horario">Horário</label><input class="form-control" id="inspecao-horario" type="time"></div>
+                            <div class="col-12"><label class="form-label" for="inspecao-ambiente">Ambiente</label><select class="form-select" id="inspecao-ambiente"><option>Sala de Estar</option><option>Cozinha</option><option>Suíte</option><option>Escritório</option></select></div>
+                            <div class="col-12"><label class="form-label" for="inspecao-observacoes">Observações e roteiro</label><textarea class="form-control" id="inspecao-observacoes" placeholder="Verificar infraestrutura, pontos elétricos, rede e viabilidade"></textarea></div>
+                        </div>
+                        <button class="btn btn-primary mt-3" type="button">Agendar e registrar</button>
+                    </section>
+                    <section class="card">
+                        <h2>Roteiro de inspeção</h2>
+                        <p>☐ Conferir infraestrutura elétrica e quadro de distribuição</p>
+                        <p>☐ Avaliar conectividade e cobertura de rede</p>
+                        <p>☐ Verificar posição e compatibilidade dos dispositivos</p>
+                        <p>☐ Fotografar pontos críticos e registrar riscos</p>
+                        <p class="mb-0">☐ Validar orçamento, cronograma e pendências</p>
+                    </section>
+                    <section class="card">
+                        <h2>Registros e pareceres</h2>
+                        <p class="muted">Nenhuma inspeção agendada.</p>
+                        <div class="border-top pt-3">
+                            <h3>Campos para parecer e resposta</h3>
+                            <label class="form-label" for="parecer-tecnico">Parecer técnico (riscos, incompatibilidades, custos e prazos)</label>
+                            <textarea class="form-control mb-3" id="parecer-tecnico"></textarea>
+                            <label class="form-label" for="resposta-arquiteto">Resposta do arquiteto</label>
+                            <textarea class="form-control mb-3" id="resposta-arquiteto"></textarea>
+                            <label class="form-label" for="anexo-inspecao">Anexar arquivo da inspeção</label>
+                            <input class="form-control" id="anexo-inspecao" type="file" multiple accept="image/*,video/*,.pdf,.doc,.docx">
+                        </div>
+                    </section>
+                </section>
+
+                <section class="section-anchor" id="versoes">
+                    <h1>Revisões e versões</h1>
+                    <p class="sub">Registre alterações e solicite novas análises.</p>
+                    <section class="card">
+                        <h2>Nova revisão</h2>
+                        <label class="form-label" for="revisao-descricao">Descrição da alteração</label>
+                        <textarea class="form-control" id="revisao-descricao" placeholder="Ex.: Mover interruptor para coluna Y"></textarea>
+                        <div class="d-flex flex-wrap gap-2 mt-3"><button class="btn btn-primary" type="button">Confirmar nova versão</button><button class="btn btn-outline-primary" type="button">Solicitar nova análise</button><a class="btn btn-outline-primary" href="#inspecoes">Solicitar inspeção</a></div>
+                    </section>
+                    <section class="card">
+                        <h2>Histórico de versões</h2>
+                        <div class="list-item"><b>Versão 1</b><p class="muted mb-0">Versão inicial • Data e hora da criação</p></div>
+                    </section>
+                </section>
+
+                <section class="section-anchor" id="execucao">
+                    <h1>Execução da obra</h1>
+                    <p class="sub">Planeje etapas, registre instalações e acompanhe custos e pendências.</p>
+                    <section class="card">
+                        <h2>Controle da execução</h2>
+                        <div class="d-flex flex-wrap gap-2">
+                            <button class="btn btn-primary" type="button">Aprovar e liberar execução</button>
+                            <button class="btn btn-outline-primary" type="button">Adicionar etapa</button>
+                            <button class="btn btn-outline-primary" type="button">Atualizar orçamento e prazo</button>
+                            <button class="btn btn-outline-primary" type="button">Encerrar projeto</button>
+                        </div>
+                        <p class="mt-3 mb-0">Status atual: <span class="badge-soft badge-orange">Em análise</span></p>
+                    </section>
+                    <section class="card">
+                        <h2>Nova etapa / Atualizar etapa</h2>
+                        <div class="row g-3">
+                            <div class="col-md-6"><label class="form-label" for="etapa-nome">Nome da etapa</label><input class="form-control" id="etapa-nome"></div>
+                            <div class="col-md-6"><label class="form-label" for="etapa-ambiente">Ambiente</label><input class="form-control" id="etapa-ambiente" value="Sala de Estar"></div>
+                            <div class="col-md-6"><label class="form-label" for="etapa-status">Status (Pendente, Em andamento, Concluído)</label><select class="form-select" id="etapa-status"><option>Pendente</option><option>Em andamento</option><option>Concluído</option></select></div>
+                            <div class="col-md-6"><label class="form-label" for="etapa-ocorrencias">Dispositivos instalados / ocorrências</label><textarea class="form-control" id="etapa-ocorrencias"></textarea></div>
+                        </div>
+                        <p class="muted mt-3 mb-0">Nenhuma etapa cadastrada.</p>
+                    </section>
+                    <section class="card">
+                        <h2>Custos e prazos</h2>
+                        <div class="row g-3">
+                            <div class="col-md-6"><label class="form-label" for="orcamento">Orçamento (R$)</label><input class="form-control" id="orcamento" type="number" value="24000"></div>
+                            <div class="col-md-6"><label class="form-label" for="prazo">Prazo em dias</label><input class="form-control" id="prazo" type="number" value="45"></div>
+                        </div>
+                        <button class="btn btn-primary mt-3" type="button">Atualizar custos e prazos</button>
+                    </section>
+                    <section class="card">
+                        <h2>Indicadores</h2>
+                        <p>Orçamento: R$ 24.000 • Prazo: 45 dias</p>
+                        <p>Etapas concluídas: 0 de 0</p>
+                        <p class="mb-0">Dispositivos cadastrados: 0</p>
+                    </section>
+                </section>
+
+                <section class="section-anchor" id="mensagens">
+                    <h1>Comunicação interna</h1>
+                    <p class="sub">Mensagens e histórico vinculados ao projeto, ambientes e dispositivos.</p>
+                    <section class="card">
+                        <h2>Nova mensagem</h2>
+                        <div class="mb-3">
+                            <label class="form-label" for="mensagem-destino">Ambiente ou dispositivo</label>
+                            <select class="form-select" id="mensagem-destino"><option>Geral</option><option>Sala de Estar</option><option>Cozinha</option><option>Suíte</option><option>Escritório</option><option>Dispositivos do catálogo</option></select>
+                        </div>
+                        <div class="mb-3"><label class="form-label" for="mensagem-texto">Mensagem (use @ para mencionar)</label><textarea class="form-control" id="mensagem-texto"></textarea></div>
+                        <button class="btn btn-primary" type="button">Enviar mensagem</button>
+                    </section>
+                    <section class="card"><h2>Histórico</h2><p class="muted mb-0">Nenhuma mensagem enviada.</p></section>
+                </section>
+
+                <section class="section-anchor" id="notificacoes">
+                    <h1>Central de notificações</h1>
+                    <p class="sub">Acompanhe alertas de prazo, segurança, custo e alterações.</p>
+                    <section class="card">
+                        <div class="card-title-row"><h2>Notificações</h2><button class="btn btn-outline-primary" type="button">Marcar todas como lidas</button></div>
+                        <p class="muted mb-0">Nenhuma notificação.</p>
+                    </section>
+                </section>
+
+                <section class="section-anchor" id="usuarios">
+                    <h1>Usuários e permissões</h1>
+                    <p class="sub">Gerencie contas e perfis. Acesso demonstrativo, sem autenticação de produção.</p>
+                    <section class="card">
+                        <h2>Novo usuário</h2>
+                        <div class="row g-3">
+                            <div class="col-md-6"><label class="form-label" for="usuario-nome">Nome</label><input class="form-control" id="usuario-nome"></div>
+                            <div class="col-md-6"><label class="form-label" for="usuario-email">E-mail</label><input class="form-control" id="usuario-email" type="email"></div>
+                            <div class="col-md-6"><label class="form-label" for="usuario-senha">Senha</label><input class="form-control" id="usuario-senha" type="password"></div>
+                            <div class="col-md-6"><label class="form-label" for="usuario-perfil">Perfil</label><select class="form-select" id="usuario-perfil"><option>Administrador</option><option>Arquiteto</option><option>Técnico</option><option>Cliente</option></select></div>
+                        </div>
+                        <button class="btn btn-primary mt-3" type="button">Cadastrar usuário</button>
+                    </section>
+                    <section class="card">
+                        <h2>Contas cadastradas</h2>
+                        <div class="table-wrap"><table class="table">
+                            <thead><tr><th>Nome</th><th>E-mail</th><th>Perfil</th><th>Ações</th></tr></thead>
+                            <tbody>
+                                <tr><td>Administrador</td><td>admin@lobal.tech</td><td><span class="badge-soft">Administrador</span></td><td><a class="btn btn-outline-primary btn-sm" href="#usuario-edicao">Editar</a></td></tr>
+                                <tr><td>Ana Arquiteta</td><td>arquiteta@lobal.tech</td><td><span class="badge-soft">Arquiteto</span></td><td><a class="btn btn-outline-primary btn-sm" href="#usuario-edicao">Editar</a></td></tr>
+                                <tr><td>João Técnico</td><td>tecnico@lobal.tech</td><td><span class="badge-soft">Técnico</span></td><td><a class="btn btn-outline-primary btn-sm" href="#usuario-edicao">Editar</a></td></tr>
+                            </tbody>
+                        </table></div>
+                    </section>
+                    <section class="card section-anchor" id="usuario-edicao">
+                        <h2>Editar usuário</h2>
+                        <div class="row g-3">
+                            <div class="col-md-4"><label class="form-label" for="editar-usuario-nome">Nome</label><input class="form-control" id="editar-usuario-nome"></div>
+                            <div class="col-md-4"><label class="form-label" for="editar-usuario-email">E-mail</label><input class="form-control" id="editar-usuario-email" type="email"></div>
+                            <div class="col-md-4"><label class="form-label" for="editar-usuario-perfil">Perfil</label><select class="form-select" id="editar-usuario-perfil"><option>Administrador</option><option>Arquiteto</option><option>Técnico</option><option>Cliente</option></select></div>
+                        </div>
+                    </section>
+                    <section class="card">
+                        <h2>Regras de acesso</h2>
+                        <p><b>Administrador:</b> gestão completa, aprovação e auditoria.</p>
+                        <p><b>Arquiteto:</b> criação, revisão, dispositivos e acompanhamento.</p>
+                        <p><b>Técnico:</b> inspeção, parecer e execução.</p>
+                        <p><b>Cliente:</b> acompanhamento e comunicação.</p>
+                        <p class="notice mb-0">As regras acima são ilustrativas. Permissões reais precisam ser validadas em servidor.</p>
+                    </section>
+                </section>
+
+                <section class="section-anchor" id="auditoria">
+                    <h1>Auditoria e relatórios</h1>
+                    <p class="sub">Histórico de alterações, responsáveis, decisões e exportação.</p>
+                    <section class="card">
+                        <h2>Relatórios</h2>
+                        <div class="d-flex flex-wrap gap-2">
+                            <button class="btn btn-primary" type="button">Exportar auditoria CSV</button>
+                            <button class="btn btn-outline-primary" type="button">Relatório PDF (impressão)</button>
+                            <button class="btn btn-outline-primary" type="button">Exportar projeto CSV</button>
+                        </div>
+                    </section>
+                    <section class="card"><h2>Linha do tempo do projeto</h2><p class="muted mb-0">Sem alterações registradas.</p></section>
+                    <section class="card">
+                        <h2>Registro de acessos e decisões</h2>
+                        <div class="table-wrap"><table class="table"><thead><tr><th>Data</th><th>Responsável</th><th>Ação</th></tr></thead><tbody><tr><td>—</td><td>—</td><td>Sem alterações registradas.</td></tr></tbody></table></div>
+                    </section>
+                </section>
+
+                <section class="section-anchor" id="requisitos">
+                    <h1>Requisitos funcionais RF01–RF60</h1>
+                    <p class="sub">Rastreabilidade entre os requisitos e as áreas do protótipo.</p>
+                    <section class="card"><h2>Início · RF01–RF09</h2>
+                        <div class="list-item"><span class="badge-soft req">RF01</span> Cadastrar e autenticar usuários.</div>
+                        <div class="list-item"><span class="badge-soft req">RF02</span> Recuperar senha e controlar o acesso por perfil.</div>
+                        <div class="list-item"><span class="badge-soft req">RF03</span> Gerenciar usuários e permissões.</div>
+                        <div class="list-item"><span class="badge-soft req">RF04</span> Registrar acessos realizados no sistema.</div>
+                        <div class="list-item"><span class="badge-soft req">RF05</span> Apresentar página inicial institucional.</div>
+                        <div class="list-item"><span class="badge-soft req">RF06</span> Direcionar clientes cadastrados para o login.</div>
+                        <div class="list-item"><span class="badge-soft req">RF07</span> Direcionar novos interessados para o atendimento comercial.</div>
+                        <div class="list-item"><span class="badge-soft req">RF08</span> Disponibilizar os canais de contato da empresa.</div>
+                        <div class="list-item"><span class="badge-soft req">RF09</span> Registrar tentativas de contato e notificar o Comercial.</div>
+                    </section>
+                    <section class="card"><h2>Comercial · RF10–RF11</h2>
+                        <div class="list-item"><span class="badge-soft req">RF10</span> Cadastrar clientes e acompanhar oportunidades comerciais.</div>
+                        <div class="list-item"><span class="badge-soft req">RF11</span> Vincular o cliente ao arquiteto responsável.</div>
+                    </section>
+                    <section class="card"><h2>Projetos · RF12–RF17</h2>
+                        <div class="list-item"><span class="badge-soft req">RF12</span> Criar, pesquisar, filtrar e arquivar projetos.</div>
+                        <div class="list-item"><span class="badge-soft req">RF13</span> Vincular cliente, arquiteto, técnico e administrador ao projeto.</div>
+                        <div class="list-item"><span class="badge-soft req">RF14</span> Anexar e visualizar a planta do projeto.</div>
+                        <div class="list-item"><span class="badge-soft req">RF15</span> Permitir zoom e movimentação sobre a planta.</div>
+                        <div class="list-item"><span class="badge-soft req">RF16</span> Identificar, selecionar e navegar pelos ambientes.</div>
+                        <div class="list-item"><span class="badge-soft req">RF17</span> Apresentar informações e situação de cada ambiente.</div>
+                    </section>
+                    <section class="card"><h2>Dispositivos · RF18–RF23</h2>
+                        <div class="list-item"><span class="badge-soft req">RF18</span> Disponibilizar um catálogo de dispositivos de automação.</div>
+                        <div class="list-item"><span class="badge-soft req">RF19</span> Pesquisar e filtrar os dispositivos disponíveis.</div>
+                        <div class="list-item"><span class="badge-soft req">RF20</span> Apresentar as especificações de cada dispositivo.</div>
+                        <div class="list-item"><span class="badge-soft req">RF21</span> Arrastar e posicionar dispositivos na planta.</div>
+                        <div class="list-item"><span class="badge-soft req">RF22</span> Inserir, mover, substituir e retirar dispositivos.</div>
+                        <div class="list-item"><span class="badge-soft req">RF23</span> Alertar sobre possíveis incompatibilidades.</div>
+                    </section>
+                    <section class="card"><h2>Simulações · RF24–RF28</h2>
+                        <div class="list-item"><span class="badge-soft req">RF24</span> Solicitar e visualizar simulações do projeto.</div>
+                        <div class="list-item"><span class="badge-soft req">RF25</span> Comparar diferentes configurações do projeto.</div>
+                        <div class="list-item"><span class="badge-soft req">RF26</span> Apresentar estimativas de consumo, economia, custo e prazo.</div>
+                        <div class="list-item"><span class="badge-soft req">RF27</span> Gerar relatórios da simulação.</div>
+                        <div class="list-item"><span class="badge-soft req">RF28</span> Encaminhar o projeto ao administrador e ao técnico.</div>
+                    </section>
+                    <section class="card"><h2>Inspeções · RF29–RF36</h2>
+                        <div class="list-item"><span class="badge-soft req">RF29</span> Agendar a inspeção técnica presencial.</div>
+                        <div class="list-item"><span class="badge-soft req">RF30</span> Apresentar um roteiro para a inspeção.</div>
+                        <div class="list-item"><span class="badge-soft req">RF31</span> Registrar a inspeção por ambiente.</div>
+                        <div class="list-item"><span class="badge-soft req">RF32</span> Anexar fotos, vídeos, documentos e observações.</div>
+                        <div class="list-item"><span class="badge-soft req">RF33</span> Emitir e enviar o parecer técnico ao arquiteto.</div>
+                        <div class="list-item"><span class="badge-soft req">RF34</span> Registrar riscos, incompatibilidades, custos e prazos.</div>
+                        <div class="list-item"><span class="badge-soft req">RF35</span> Permitir que o arquiteto responda ao parecer.</div>
+                        <div class="list-item"><span class="badge-soft req">RF36</span> Permitir a continuidade ou edição do projeto.</div>
+                    </section>
+                    <section class="card"><h2>Versões · RF37–RF40</h2>
+                        <div class="list-item"><span class="badge-soft req">RF37</span> Criar uma nova versão após cada edição confirmada.</div>
+                        <div class="list-item"><span class="badge-soft req">RF38</span> Comparar versões e destacar alterações.</div>
+                        <div class="list-item"><span class="badge-soft req">RF39</span> Reenviar alterações ao administrador e ao técnico.</div>
+                        <div class="list-item"><span class="badge-soft req">RF40</span> Solicitar nova análise ou inspeção técnica.</div>
+                    </section>
+                    <section class="card"><h2>Execução · RF41–RF48</h2>
+                        <div class="list-item"><span class="badge-soft req">RF41</span> Liberar o projeto aprovado para execução.</div>
+                        <div class="list-item"><span class="badge-soft req">RF42</span> Planejar e registrar as etapas da obra.</div>
+                        <div class="list-item"><span class="badge-soft req">RF43</span> Atualizar o andamento por ambiente e dispositivo.</div>
+                        <div class="list-item"><span class="badge-soft req">RF44</span> Registrar dispositivos instalados e ocorrências.</div>
+                        <div class="list-item"><span class="badge-soft req">RF45</span> Atualizar custos, prazos e pendências.</div>
+                        <div class="list-item"><span class="badge-soft req">RF46</span> Permitir ao administrador acompanhar a execução.</div>
+                        <div class="list-item"><span class="badge-soft req">RF47</span> Permitir ao arquiteto inspecionar o andamento.</div>
+                        <div class="list-item"><span class="badge-soft req">RF48</span> Concluir ambientes e encerrar o projeto.</div>
+                    </section>
+                    <section class="card"><h2>Mensagens · RF49–RF52</h2>
+                        <div class="list-item"><span class="badge-soft req">RF49</span> Disponibilizar comunicação interna por projeto.</div>
+                        <div class="list-item"><span class="badge-soft req">RF50</span> Vincular mensagens a ambientes e dispositivos.</div>
+                        <div class="list-item"><span class="badge-soft req">RF51</span> Permitir mensagens, menções e anexos.</div>
+                        <div class="list-item"><span class="badge-soft req">RF52</span> Manter o histórico das comunicações.</div>
+                    </section>
+                    <section class="card"><h2>Notificações · RF53–RF55</h2>
+                        <div class="list-item"><span class="badge-soft req">RF53</span> Disponibilizar uma central de notificações.</div>
+                        <div class="list-item"><span class="badge-soft req">RF54</span> Notificar responsáveis sobre alterações e pendências.</div>
+                        <div class="list-item"><span class="badge-soft req">RF55</span> Destacar alertas de segurança, custo, prazo e viabilidade.</div>
+                    </section>
+                    <section class="card"><h2>Auditoria · RF56–RF60</h2>
+                        <div class="list-item"><span class="badge-soft req">RF56</span> Manter o histórico completo das alterações.</div>
+                        <div class="list-item"><span class="badge-soft req">RF57</span> Registrar responsáveis, datas, horários e decisões.</div>
+                        <div class="list-item"><span class="badge-soft req">RF58</span> Apresentar uma linha do tempo do projeto.</div>
+                        <div class="list-item"><span class="badge-soft req">RF59</span> Gerar relatórios de auditoria.</div>
+                        <div class="list-item"><span class="badge-soft req">RF60</span> Exportar relatórios em PDF ou planilha.</div>
+                    </section>
+                </section>
+            </main>
+        </div>
+    </div>
+</body>
+</html>
